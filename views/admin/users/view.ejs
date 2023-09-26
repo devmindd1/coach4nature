@@ -1,0 +1,198 @@
+<% layout("../main") -%>
+
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="card card-primary card-outline card-outline-tabs">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card-body">
+                            <div class="row">
+                                <% if(user['img']) { %>
+                                    <div class="col-12 col-sm-6">
+                                        <div style="width: 400px;" class="text-muted">
+                                            <img style="width: 100%;" src="<%= user['img']%>" alt="">
+                                        </div>
+                                    </div>
+                                <% } %>
+                                <div class="col-12 col-sm-6">
+                                    <strong>Info</strong>
+                                    <p class="text-muted"> Name: <%= user['name']%></p>
+                                    <p class="text-muted"> Email: <%= user['email']%></p>
+                                    <p class="text-muted"> Phone: <%= user['phone']%></p>
+                                    <p class="text-muted"> Gender: <%= user['gender_id'] == 1 ? 'Female': 'Male'%></p>
+                                    <p class="text-muted"> Country: <%= user['country_name']%></p>
+                                    <p class="text-muted"> State: <%= user['state'] ? user['state']: ' -- '%></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-sm-12">
+                        <div class="card card-primary card-outline card-tabs">
+                            <div class="card-header p-0 pt-1 border-bottom-0">
+                                <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="quiz-1-tab" data-toggle="pill" href="#quiz-1"
+                                           role="tab" aria-controls="quiz-1" aria-selected="true">Step 1 - Get to know each oher</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="quiz-2-tab" data-toggle="pill" href="#quiz-2"
+                                           role="tab" aria-controls="quiz-2" aria-selected="false">Step 2 - Statements</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="quiz-3-tab" data-toggle="pill" href="#quiz-3"
+                                           role="tab" aria-controls="quiz-3" aria-selected="false">Step 3 - Feeling</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="quiz-4-tab" data-toggle="pill" href="#quiz-4"
+                                           role="tab" aria-controls="quiz-4" aria-selected="false">Step 4 - Mood</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="quiz-5-tab" data-toggle="pill" href="#quiz-5"
+                                           role="tab" aria-controls="quiz-5" aria-selected="false">Step 5 - Strengths and Nature</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="quiz-6-tab" data-toggle="pill" href="#quiz-6"
+                                           role="tab" aria-controls="quiz-6" aria-selected="false">Step 6</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-body">
+                                <div class="tab-content" id="custom-tabs-three-tabContent">
+                                    <div class="tab-pane fade show active" id="quiz-1" role="tabpanel" aria-labelledby="quiz-1-tab">
+                                        <% if(answers[1]) { %>
+                                            <% answers[1].forEach(function(answer){ %>
+                                                <div>
+                                                    <strong><%= answer['question_title'] %>: <%= answer['question_text'] %></strong>
+                                                    <p class="text-muted"><%= answer['question_answer'] %></p>
+                                                    <em><%= answer['score'] %></em>
+                                                    <hr>
+                                                </div>
+                                            <% scores += answer['score']; }); %>
+
+                                            <div style="float: right;"><strong> total: <%= scores %> </strong></div>
+                                        <% } %>
+                                    </div>
+                                    <div class="tab-pane fade" id="quiz-2" role="tabpanel" aria-labelledby="quiz-2-tab">
+                                        <% if(answers[2]) { %>
+                                            <% scores = 0; answers[2].forEach(function(answer){ %>
+                                                <div>
+                                                    <strong><%= answer['question_title'] %>: <%= answer['question_text'] %></strong>
+                                                    <p class="text-muted"><%= answer['question_answer'] %></p>
+                                                    <em><%= answer['score'] %></em>
+                                                    <hr>
+                                                </div>
+                                            <% scores += answer['score']; }); %>
+
+                                            <div style="float: right;"><strong> total: <%= scores %> </strong></div>
+                                        <% } %>
+                                    </div>
+                                    <div class="tab-pane fade" id="quiz-3" role="tabpanel" aria-labelledby="quiz-3-tab">
+                                        <% if(answers[3]) { %>
+                                            <% scores = 0; answers[3].forEach(function(answer){ %>
+                                                <div>
+                                                    <strong><%= answer['question_title'] %>: <%= answer['question_text'] %></strong>
+                                                    <p class="text-muted"><%= answer['question_answer'] %></p>
+                                                    <em><%= answer['score'] %></em>
+                                                    <hr>
+                                                </div>
+                                            <% scores += answer['score']; }); %>
+
+                                            <div style="float: right;"><strong> total: <%= scores %> </strong></div>
+                                        <% } %>
+                                    </div>
+                                    <div class="tab-pane fade" id="quiz-4" role="tabpanel" aria-labelledby="quiz-4-tab">
+                                        <% if(answers[4]) { %>
+                                            <% scores = 0; answers[4].forEach(function(answer){ %>
+                                                <div>
+                                                    <strong><%= answer['question_title'] %>: <%= answer['question_text'] %></strong>
+                                                    <p class="text-muted"><%= answer['question_answer'] %></p>
+                                                    <em><%= answer['score'] %></em>
+                                                    <hr>
+                                                </div>
+                                            <% scores += answer['score']; }); %>
+
+                                            <div style="float: right;"><strong> total: <%= scores %> </strong></div>
+                                        <% } %>
+                                    </div>
+                                    <div class="tab-pane fade" id="quiz-5" role="tabpanel" aria-labelledby="quiz-5-tab">
+                                        <% if(answers[5]) { %>
+                                            <div style="width: 310px;">
+                                                <% scores = 0; answers[5].forEach(function(answer){ %>
+                                                    <div style="height: 30px;">
+                                                        <strong><%= answer['question_title'] %> : </strong>
+                                                        <div style="float: right; position: relative;">
+                                                            <% for(let i = 0; i < 6; i++) { %>
+                                                                <% if(i < answer['score']) { %>
+                                                                    <img src="/admin/images/radio_full.png" alt="">
+                                                                <% }else{ %>
+                                                                    <img src="/admin/images/radio.png" alt="">
+                                                                <% } %>
+                                                            <% } %>
+                                                        </div>
+
+                                                    </div>
+                                                <% scores += answer['score']; }); %>
+                                            </div>
+
+                                            <div style="float: right;"><strong> total: <%= scores %> </strong></div>
+                                        <% } %>
+                                    </div>
+                                    <div class="tab-pane fade" id="quiz-6" role="tabpanel" aria-labelledby="quiz-6-tab">
+                                        <% if(answers[6] && answers[6][0]) { %>
+                                            <div style="width: 165px;">
+                                                <div>
+                                                    <img src="/uploads/src/questions_answers/id_225.png" alt="" style="margin-right: 10px;">
+                                                    <div style="float: right; margin-top: 16px;">
+                                                        <input <%= answers[6][0]['score'] == 1 ? 'checked': 'disabled' %> type="radio">
+                                                        <strong>A</strong>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <img src="/uploads/src/questions_answers/id_226.png" alt="" style="margin-right: 10px;">
+
+                                                    <div style="float: right; margin-top: 16px;">
+                                                        <input <%= answers[6][0]['score'] == 2 ? 'checked': 'disabled' %> type="radio">
+                                                        <strong>B</strong>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <img src="/uploads/src/questions_answers/id_227.png" alt="" style="margin-right: 10px;">
+                                                    <div style="float: right; margin-top: 16px;">
+                                                        <input <%= answers[6][0]['score'] == 3 ? 'checked': 'disabled' %> type="radio">
+                                                        <strong>C</strong>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <img src="/uploads/src/questions_answers/id_228.png" alt="" style="margin-right: 10px;">
+                                                    <div style="float: right; margin-top: 16px;">
+                                                        <input <%= answers[6][0]['score'] == 4 ? 'checked': 'disabled' %> type="radio">
+                                                        <strong>D</strong>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <img src="/uploads/src/questions_answers/id_229.png" alt="" style="margin-right: 10px;">
+                                                    <div style="float: right; margin-top: 16px;">
+                                                        <input <%= answers[6][0]['score'] == 5 ? 'checked': 'disabled' %> type="radio">
+                                                        <strong>E</strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</section>
