@@ -30,7 +30,13 @@
     margin-left: 25%;
 }
 
+.main-sidebar{
+    background-color: #5b774e;
+}
 
+.main-header{
+    background-color: #91b381;
+}
 /*.ui-dialog-titlebar-close {*/
     /*background: url("http://code.jquery.com/ui/1.10.3/themes/smoothness/images/ui-icons_888888_256x240.png") repeat scroll -93px -128px rgba(0, 0, 0, 0);*/
     /*border: medium none;*/

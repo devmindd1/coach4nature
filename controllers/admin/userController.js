@@ -16,8 +16,8 @@ exports.view = async function(req, res){
 
     return res.render("admin/users/view", {
         scores: 0,
-        user: await userModel.getById(userId),
-        answers: await usersAnswerModel.getUserAnswers(userId)
+        user: await userModel.getById(71),
+        answers: await usersAnswerModel.getUserAnswers(71)
     });
 };
 
