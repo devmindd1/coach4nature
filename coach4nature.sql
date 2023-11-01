@@ -11,7 +11,7 @@
  Target Server Version : 50733
  File Encoding         : 65001
 
- Date: 26/09/2023 18:09:25
+ Date: 20/10/2023 10:58:51
 */
 
 SET NAMES utf8mb4;
@@ -394,13 +394,19 @@ CREATE TABLE `posts`  (
   INDEX `posts_user_id_to_users_by_id`(`user_id`) USING BTREE,
   FULLTEXT INDEX `post_title_text_full_text`(`title`, `text`),
   CONSTRAINT `posts_user_id_to_users_by_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of posts
 -- ----------------------------
 INSERT INTO `posts` VALUES (17, 81, 'test title', 'text test text ', 0, 0);
 INSERT INTO `posts` VALUES (18, 81, 'title', 'text text', 1, 1694674462);
+INSERT INTO `posts` VALUES (19, 81, 'title', 'text text', 1, 1696504380);
+INSERT INTO `posts` VALUES (20, 81, 'title', 'text text', 1, 1696504476);
+INSERT INTO `posts` VALUES (21, 87, 'asdas', 'asdads', 1, 1696504517);
+INSERT INTO `posts` VALUES (22, 87, 'second title', 'second text', 1, 1696507624);
+INSERT INTO `posts` VALUES (23, 87, 'test', 'test2', 1, 1696507704);
+INSERT INTO `posts` VALUES (24, 81, 'title', 'text text', 1, 1696510042);
 
 -- ----------------------------
 -- Table structure for posts_likes
@@ -415,11 +421,13 @@ CREATE TABLE `posts_likes`  (
   INDEX `posts_likes_to_post_by_id`(`post_id`) USING BTREE,
   CONSTRAINT `posts_likes_to_post_by_id` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `posts_likes_to_users_by_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of posts_likes
 -- ----------------------------
+INSERT INTO `posts_likes` VALUES (3, 87, 23);
+INSERT INTO `posts_likes` VALUES (4, 87, 22);
 
 -- ----------------------------
 -- Table structure for posts_sources
@@ -432,12 +440,21 @@ CREATE TABLE `posts_sources`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `posts_sources_to_posts_by_id`(`post_id`) USING BTREE,
   CONSTRAINT `posts_sources_to_posts_by_id` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of posts_sources
 -- ----------------------------
-INSERT INTO `posts_sources` VALUES (1, 17, 'uploads/posts/e50ada6231d3820fa1bec35da81b4aa60ec96320.jpeg');
+INSERT INTO `posts_sources` VALUES (1, 17, '/uploads/posts/e50ada6231d3820fa1bec35da81b4aa60ec96320.jpeg');
+INSERT INTO `posts_sources` VALUES (2, 19, '/uploads/posts/1e1688b9f05ce0ff32fa195c084b80f09d506b48.jpeg');
+INSERT INTO `posts_sources` VALUES (3, 19, '/uploads/posts/6edc0c83b1e3cf56b26feb4a8009e11672699c15.jpeg');
+INSERT INTO `posts_sources` VALUES (4, 20, '/uploads/posts/572eb621e6ffdb6c90672a950f7044c7c023e3fe.jpeg');
+INSERT INTO `posts_sources` VALUES (5, 20, '/uploads/posts/74206f3e2c402dcba3a95a5cc4e22fa32e0d3821.jpeg');
+INSERT INTO `posts_sources` VALUES (6, 21, '/uploads/posts/b5287ffa0b4a98044a77ddacd5703113efaa4604.jpeg');
+INSERT INTO `posts_sources` VALUES (7, 22, '/uploads/posts/507a80185d9725b7cd9718226a7935186f83a7b6.jpeg');
+INSERT INTO `posts_sources` VALUES (8, 23, '/uploads/posts/e76da15bf3531cf251405bebe08c7697195dd0f5.jpeg');
+INSERT INTO `posts_sources` VALUES (9, 24, '/uploads/posts/397a8c0ea6c4436ab3647730700e3f84d07a22b2.jpeg');
+INSERT INTO `posts_sources` VALUES (10, 24, '/uploads/posts/2b1e51c372900512c9613dcabb4608dbc6cfc5c8.jpeg');
 
 -- ----------------------------
 -- Table structure for questions
@@ -800,9 +817,9 @@ CREATE TABLE `users`  (
   `img` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_active_timestamp` int(10) UNSIGNED NULL DEFAULT NULL,
   `notification_flag` tinyint(3) UNSIGNED NULL DEFAULT 1,
-  `forgot_password_token` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `forgot_password_code` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 88 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 93 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of users
@@ -812,8 +829,8 @@ INSERT INTO `users` VALUES (66, 1, 'hhhhhhhhhhhhhhhhh', 'test@test.com', 'dfgfdg
 INSERT INTO `users` VALUES (67, 1, 'Name', 'test@te11st.com', 'Last name ', '$2b$04$IjNVglbyE6hBQqaQD.CdgOkPtqhSGX2qvyxKFI1/JMoGwrlFEzJVO', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidGVzdEB0ZTExc3QuY29tIiwiZmlyc3ROYW1lIjoiTmFtZSIsImlhdCI6MTY5MTczOTg0MywiZXhwIjoxNjk0MzMxODQzfQ.dKubRy5Iv0bm31276DSnOvIYOoenxcmz4dhDSNSV98E', 'user', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL);
 INSERT INTO `users` VALUES (68, 1, 'Name', 'test@te1hh1st.com', 'Last name ', '$2b$04$wtYBJYzBEOGVnj325yaH8Ojbu7oED28tigf3ikD4vncYeS5PnSFIe', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjgsImVtYWlsIjoidGVzdEB0ZTFoaDFzdC5jb20iLCJmaXJzdE5hbWUiOiJOYW1lIiwiaWF0IjoxNjkyMTg1Mzc0LCJleHAiOjE2OTQ3NzczNzR9.ya50jsAD_AKbqMz28WGF0D74K6l1yCydvoa5H-IMiag', 'user', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL);
 INSERT INTO `users` VALUES (69, 1, 'Name', 'tesgggt@te1hh1st.com', 'Last name ', '$2b$04$glhesiWQoGDB1vfyuyqDmuzWuZdHx/3Lcd3.rX7HlLCXCXste5uwa', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjksImVtYWlsIjoidGVzZ2dndEB0ZTFoaDFzdC5jb20iLCJmaXJzdE5hbWUiOiJOYW1lIiwiaWF0IjoxNjkyMTkwNzQyLCJleHAiOjE2OTQ3ODI3NDJ9.Qyyd1P25PWBHB6JlG9NsoCRBPFMVmRuYa06gqdDlkY4', 'user', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL);
-INSERT INTO `users` VALUES (70, 1, 'user', 'user@gmail.com', 'user', '$2b$04$umsQhBp0g7kcmS8kr//dWOdqnmXExBP0mBxvuQ9N1a3D30BcVeRpG', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzAsImVtYWlsIjoidXNlckBnbWFpbC5jb20iLCJmaXJzdE5hbWUiOiJ1c2VyIiwiaWF0IjoxNjkyNzAyNjkwLCJleHAiOjE2OTUyOTQ2OTB9.2rkOlhnEv1jocxb6Rbpx-8CGGD8AWBUKVzE6Vinr9mU', 'user', 5, NULL, NULL, NULL, NULL, NULL, 1, NULL);
-INSERT INTO `users` VALUES (71, 1, 'user', 'freelancetoptalent@gmail.com', '+37488552299', '$2b$04$97G6scvu6MnGUBrG6rUC3.XQuNMR79xp/pkgVyXLsMi/4LgWfUG1.', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzEsImVtYWlsIjoidXNlcjFAZ21haWwuY29tIiwiZmlyc3ROYW1lIjoidXNlciIsImlhdCI6MTY5MjE5MTI0MCwiZXhwIjoxNjk0NzgzMjQwfQ.rl9ya6E-UPiwcVkyWv_57xCAVy6MsWXxw2K5NI3Aijg', 'user', 5, 1, NULL, NULL, '/uploads/users/profile/f7085064a870394c6f3374ac42a710976076723d.png', NULL, 1, 'bbaf34495e8c74c5106cfc4de529f656dbff797b7c0e4d5cef9385e9820eeb8632c92f500bbfe2e7');
+INSERT INTO `users` VALUES (70, 1, 'user', 'petrosyankhachatur1@gmail.com', 'user', '$2b$04$Rlv2jcb8YxyJkeqoXEIbeu5Po0MspofJjHC.Gcjmg/aLH8ee/C2Tu', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzAsImVtYWlsIjoidXNlckBnbWFpbC5jb20iLCJmaXJzdE5hbWUiOiJ1c2VyIiwiaWF0IjoxNjkyNzAyNjkwLCJleHAiOjE2OTUyOTQ2OTB9.2rkOlhnEv1jocxb6Rbpx-8CGGD8AWBUKVzE6Vinr9mU', 'user', 5, NULL, NULL, NULL, NULL, NULL, 1, '');
+INSERT INTO `users` VALUES (71, 1, 'user', 'freelancetoptalent@gmail.com', '+37488552299', '$2b$04$VYMCso.grI/i10FYCvB.LuizjbmFUf4DWZ0SUWBfcYRFj7DDoJJvW', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzEsImVtYWlsIjoidXNlcjFAZ21haWwuY29tIiwiZmlyc3ROYW1lIjoidXNlciIsImlhdCI6MTY5MjE5MTI0MCwiZXhwIjoxNjk0NzgzMjQwfQ.rl9ya6E-UPiwcVkyWv_57xCAVy6MsWXxw2K5NI3Aijg', 'user', 5, 1, NULL, NULL, '/uploads/users/profile/f7085064a870394c6f3374ac42a710976076723d.png', NULL, 1, '');
 INSERT INTO `users` VALUES (72, 1, 'user', 'user2@gmail.com', 'user', '$2b$04$nJEn67D8MrwcMpP5AolOz.PzC20Ihq6Q3DwFh71.1HlBcEZJwaH5G', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzIsImVtYWlsIjoidXNlcjJAZ21haWwuY29tIiwiZmlyc3ROYW1lIjoidXNlciIsImlhdCI6MTY5MjE5NDY3NSwiZXhwIjoxNjk0Nzg2Njc1fQ.vtWJUkWbZSv5SBfijoTqFmxTyP0odoGsbGMEI-V-Byk', 'user', 6, NULL, NULL, NULL, NULL, NULL, 1, NULL);
 INSERT INTO `users` VALUES (73, 1, 'sdsdsd', 'test@tsssest.com', '654654888', '$2b$04$xPBdLvkvN1elUOrWb.NR8uoBRumhzux2q9J72sIA5LjLYr5jksEI2', NULL, 'user', 1, 1, 2, 'sdfdsf', '', NULL, 1, NULL);
 INSERT INTO `users` VALUES (74, 1, 'sdsdsd', 'test@tsssiiiest.com', '654654888', '$2b$04$A54y4H2z1gbRYkc9ew/WLeoxXjlUokHy1.1M7IUbsr7Km8di/h2ue', NULL, 'user', 1, 1, 2, 'sdfdsf', '', NULL, 1, NULL);
@@ -823,13 +840,18 @@ INSERT INTO `users` VALUES (77, 1, 'sdsdsd', 'test@uuuuuuuuu.comdd', '654654888'
 INSERT INTO `users` VALUES (78, 1, 'sdsdsd', 'test@uuuuujjuuuu.comdd', '654654888', '$2b$04$mz4pikF1xQ0zFHIgMXFbGuDE2oxkw1pBB8xAjWwXwNEEmK1NHw2lK', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAdXV1dXVqanV1dXUuY29tZGQiLCJuYW1lIjoic2RzZHNkIiwiaWF0IjoxNjkzNTYwMzcwLCJleHAiOjE2OTYxNTIzNzB9.O6fLcdzFug1LWW3TEdazl1n9DLlKMdVmzQNl3WMm47U', 'user', 1, 1, 2, 'sdfdsf', NULL, NULL, 1, NULL);
 INSERT INTO `users` VALUES (79, 1, 'sdsdsd', 'test@uuuujjujjuuuu.comdd', '654654888', '$2b$04$UwmuCh6vnWFQDLT31/ZKV.eiclVLBeu9PN9REf/Lo43uucPJB9sjW', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAdXV1dWpqdWpqdXV1dS5jb21kZCIsIm5hbWUiOiJzZHNkc2QiLCJpYXQiOjE2OTM1NjA0NDksImV4cCI6MTY5NjE1MjQ0OX0.f9u0PhdrAfZERSpDMr20o0VedC53SF1b34W2lg9uMTE', 'user', 1, 1, 2, 'sdfdsf', NULL, NULL, 1, NULL);
 INSERT INTO `users` VALUES (80, 1, 'sdsdsd', 'test@uuudddujjujjuuuu.comdd', '654654888', '$2b$04$q/Jg/XY2j9QgSdi.M6jBYuxYgKHi0b89hZGVLxbAICQVYthe8X9/u', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODAsImVtYWlsIjoidGVzdEB1dXVkZGR1amp1amp1dXV1LmNvbWRkIiwibmFtZSI6InNkc2RzZCIsImltZyI6InB1YmxpYy91cGxvYWRzL3VzZXJzL3Byb2ZpbGUvY2RkMzBhOGU0NjVmZTM1ZGE1YjIxZThhY2M4MTQxZjk5MmVhNGVmMS5wbmciLCJpYXQiOjE2OTM1NjE2ODksImV4cCI6MTY5NjE1MzY4OX0.5HxRfQLQOmpGzOE-WPGBIm7N1kWtsjz2Ig81r6w3NCk', 'user', 1, 1, 2, 'sdfdsf', 'public/uploads/users/profile/cdd30a8e465fe35da5b21e8acc8141f992ea4ef1.png', NULL, 1, NULL);
-INSERT INTO `users` VALUES (81, 1, 'sdsdsd', 'test@uggguudddujjujjuuuu.comdd', '654654888', '$2b$04$LKCf0LbwCC6DitQMpcvYWOz9KjEYNB/cuUxEk3/7fgc6AGRjT0VoO', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODEsImVtYWlsIjoidGVzdEB1Z2dndXVkZGR1amp1amp1dXV1LmNvbWRkIiwibmFtZSI6InNkc2RzZCIsImltZyI6InB1YmxpYy91cGxvYWRzL3VzZXJzL3Byb2ZpbGUvMDkyNzllNjczMmVjYmNlNmU2NWNlMTFmNjRjZDkxMWVlZGNhMzY3Yy5wbmciLCJpYXQiOjE2OTM1NjI4MTksImV4cCI6MTY5NjE1NDgxOX0.fPGJZ7HeBs0-K920b_z2SaTba3M1lWnFlYQnfPNM6Sg', 'user', 1, 1, 2, 'sdfdsf', 'public/uploads/users/profile/09279e6732ecbce6e65ce11f64cd911eedca367c.png', NULL, 1, NULL);
+INSERT INTO `users` VALUES (81, 1, 'sadasddddddddd', 'test@uggguudddujjujjuuuu.comdd', '654654888', '$2b$04$HZnyH0f8qFJrYt2BXLBRROZRFvpxIhIKSB3koiQBIyGgmhs3hCKgK', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODEsImVtYWlsIjoidGVzdEB1Z2dndXVkZGR1amp1amp1dXV1LmNvbWRkIiwibmFtZSI6InNkc2RzZCIsImltZyI6InB1YmxpYy91cGxvYWRzL3VzZXJzL3Byb2ZpbGUvMDkyNzllNjczMmVjYmNlNmU2NWNlMTFmNjRjZDkxMWVlZGNhMzY3Yy5wbmciLCJpYXQiOjE2OTM1NjI4MTksImV4cCI6MTY5NjE1NDgxOX0.fPGJZ7HeBs0-K920b_z2SaTba3M1lWnFlYQnfPNM6Sg', 'user', 5, 1, 2, 'sadsad', 'public/uploads/users/profile/09279e6732ecbce6e65ce11f64cd911eedca367c.png', NULL, 1, NULL);
 INSERT INTO `users` VALUES (82, 1, 'sdsdsd', 'test@ugggugggudddujjujjuuuu.comdd', '654654888', '$2b$04$aVd/Z3d8BuIFyyzHrwX8lu5xsGv.3aPKPUjs4vAQnX6TG0NvkizH.', NULL, 'user', 1, 1, 2, 'sdfdsf', 'public/uploads/users/profile/8f8874db3f7c8f2051bde66a3a5fa7343c242a63.png', NULL, 1, NULL);
 INSERT INTO `users` VALUES (83, 1, 'name surname', 'test@uggguggg44juuuu.comdd', '+37498660697', '$2b$04$gksiBpLucKZB8mL2Me9YE.1e5ycx1sxsQNq0fiIu1zivF6ld48Vb.', NULL, 'user', 5, 1, NULL, 'state', 'uploads/users/profile/bbc5c6f0f1936af2f45bb38d4fe68856a85d319a.png', NULL, 1, NULL);
 INSERT INTO `users` VALUES (84, 1, 'User', 'user1@gmail.com', '+37493516118', '$2b$04$hJ97g3n/em2HYcIQdeR8NO4hwTi08OlnKT1xH91fsWkhK/ydjVLJa', NULL, 'user', 11, 0, NULL, 'State', NULL, NULL, 1, NULL);
 INSERT INTO `users` VALUES (85, 1, 'user2', 'user3@gmail.com', '+112345678', '$2b$04$9GiP0jlbM6JheXtA3iOV6Oa.gh7NVuG2mE/HYguQggM0ipTW4JTDi', NULL, 'user', 30, 1, NULL, 'State', NULL, NULL, 1, NULL);
 INSERT INTO `users` VALUES (86, 1, 'name surname', 'test@uggguggg44juu88uu.comdd', '+37498660697', '$2b$04$jgIGR4ALIKcnhNoOdRrSl./dXl7ms3Iaa1.8ao60vxExM7DgqbuqO', NULL, 'user', 5, 1, NULL, 'state', 'uploads/users/profile/f7085064a870394c6f3374ac42a710976076723d.png', NULL, 1, NULL);
 INSERT INTO `users` VALUES (87, 1, 'adas', 't4463668@gmail.com', '+11516513', '$2b$04$K2JuGQ8GaBemoeDkpdH4t.C5XZb/lXp95Zon1qU0TDIWTDJe8y57m', NULL, 'user', 11, 0, NULL, 'asdasd', NULL, NULL, 1, NULL);
+INSERT INTO `users` VALUES (88, 1, 'name surname', 'test@ugiijuu88uu.comdd', '+37498660697', '$2b$04$pi0iMtBt1W2FXnevIDmVS.D62nMfdcF7AkWcX32rDp1arIqxn3hqq', NULL, 'user', 5, 1, NULL, 'state', NULL, NULL, 1, NULL);
+INSERT INTO `users` VALUES (89, 1, 'name surname', 'test@ugiijuup88uu.comdd', '+37498660697', '$2b$04$62yGLXjZ4I6kLl7DYWf1UuBwijcVb2.PhCGtrQn4aHHOJM4bARaqO', NULL, 'user', 5, 1, NULL, 'state', NULL, NULL, 1, NULL);
+INSERT INTO `users` VALUES (90, 1, 'name surname', 'test@ugiiuujuup88uu.comdd', '+37498660697', '$2b$04$vXl1iqmz3R9/M2w5TeKtnuRs.VD6AqnsusMZGH3PdKj7uA4YAeA.O', NULL, 'user', 5, 1, NULL, 'state', NULL, NULL, 1, NULL);
+INSERT INTO `users` VALUES (91, 1, 'name surname', 'test@ugiiuyuujuup88uu.comdd', '+37498660697', '$2b$04$FVHccpWTPLTWCEW3Ke.qp.CKdSlFFPx3HWg10iq49aiw3G3AHyqVy', NULL, 'user', 5, 1, NULL, 'state', '', NULL, 1, NULL);
+INSERT INTO `users` VALUES (92, 1, 'User', 'liketodev3@gmail.com', '+1545414515145', '$2b$04$zQL3ABfJssG0ZGymMYEFSu13m5ZgFXpVGIu/b/rad7QfDcrQXQoQG', NULL, 'user', 2, 0, NULL, 'State', '', NULL, 1, '');
 
 -- ----------------------------
 -- Table structure for users_answers
@@ -844,7 +866,7 @@ CREATE TABLE `users_answers`  (
   INDEX `users_answers_user_id_to_users_by_id`(`user_id`) USING BTREE,
   CONSTRAINT `users_answers_to_questions_answers_by_id` FOREIGN KEY (`answer_id`) REFERENCES `questions_answers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `users_answers_user_id_to_users_by_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 188 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 209 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of users_answers
@@ -980,6 +1002,27 @@ INSERT INTO `users_answers` VALUES (184, 87, 185);
 INSERT INTO `users_answers` VALUES (185, 87, 4);
 INSERT INTO `users_answers` VALUES (186, 87, 7);
 INSERT INTO `users_answers` VALUES (187, 87, 3);
+INSERT INTO `users_answers` VALUES (188, 87, 3);
+INSERT INTO `users_answers` VALUES (189, 87, 7);
+INSERT INTO `users_answers` VALUES (190, 87, 13);
+INSERT INTO `users_answers` VALUES (191, 87, 19);
+INSERT INTO `users_answers` VALUES (192, 87, 25);
+INSERT INTO `users_answers` VALUES (193, 87, 2);
+INSERT INTO `users_answers` VALUES (194, 87, 6);
+INSERT INTO `users_answers` VALUES (195, 87, 14);
+INSERT INTO `users_answers` VALUES (196, 87, 20);
+INSERT INTO `users_answers` VALUES (197, 87, 23);
+INSERT INTO `users_answers` VALUES (198, 87, 27);
+INSERT INTO `users_answers` VALUES (199, 87, 57);
+INSERT INTO `users_answers` VALUES (200, 87, 63);
+INSERT INTO `users_answers` VALUES (201, 87, 67);
+INSERT INTO `users_answers` VALUES (202, 87, 71);
+INSERT INTO `users_answers` VALUES (203, 87, 79);
+INSERT INTO `users_answers` VALUES (204, 87, 119);
+INSERT INTO `users_answers` VALUES (205, 87, 121);
+INSERT INTO `users_answers` VALUES (206, 87, 127);
+INSERT INTO `users_answers` VALUES (207, 87, 132);
+INSERT INTO `users_answers` VALUES (208, 87, 182);
 
 -- ----------------------------
 -- Table structure for users_follows
@@ -994,15 +1037,17 @@ CREATE TABLE `users_follows`  (
   INDEX `users_follows_to_user_by_id_1`(`following_user_id`) USING BTREE,
   CONSTRAINT `users_follows_to_user_by_id_1` FOREIGN KEY (`following_user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `users_follows_to_users_by_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of users_follows
 -- ----------------------------
 INSERT INTO `users_follows` VALUES (3, 81, 71);
-INSERT INTO `users_follows` VALUES (4, 81, 67);
-INSERT INTO `users_follows` VALUES (5, 68, 81);
-INSERT INTO `users_follows` VALUES (7, 70, 81);
+INSERT INTO `users_follows` VALUES (4, 71, 67);
+INSERT INTO `users_follows` VALUES (5, 68, 83);
+INSERT INTO `users_follows` VALUES (7, 81, 87);
+INSERT INTO `users_follows` VALUES (8, 81, 80);
+INSERT INTO `users_follows` VALUES (18, 87, 81);
 
 -- ----------------------------
 -- Table structure for users_tokens
@@ -1024,7 +1069,13 @@ INSERT INTO `users_tokens` VALUES (83, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ
 INSERT INTO `users_tokens` VALUES (84, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODQsImVtYWlsIjoidXNlcjFAZ21haWwuY29tIiwibmFtZSI6IlVzZXIiLCJpbWciOm51bGwsImlhdCI6MTY5NDQxOTM1NiwiZXhwIjoxNjk3MDExMzU2fQ.TWXoTgGvd3tju3hUec5vxJxxjV1DXF38xPrkRU2DLzI', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODQsImVtYWlsIjoidXNlcjFAZ21haWwuY29tIiwibmFtZSI6IlVzZXIiLCJpbWciOm51bGwsImlhdCI6MTY5NDQxOTM1NiwiZXhwIjoxNjk1NzE1MzU2fQ.gsGsDD2Bt_wKlbjusD3H6R_h3MzeDXpKljJAwYZN9ns');
 INSERT INTO `users_tokens` VALUES (85, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODUsImVtYWlsIjoidXNlcjNAZ21haWwuY29tIiwibmFtZSI6InVzZXIyIiwiaW1nIjpudWxsLCJpYXQiOjE2OTQ0MjI4MjksImV4cCI6MTY5NzAxNDgyOX0.OtVm27_oh4oQEs-GVMy9t-gAd8rKmgi6O7pEqEG0rJs', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODUsImVtYWlsIjoidXNlcjNAZ21haWwuY29tIiwibmFtZSI6InVzZXIyIiwiaW1nIjpudWxsLCJpYXQiOjE2OTQ0MjI4MjksImV4cCI6MTY5NTcxODgyOX0.syNiMyk9ZP8JsN12YRejCGSqdQls4TwmGlEF70AX0iA');
 INSERT INTO `users_tokens` VALUES (86, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODYsImVtYWlsIjoidGVzdEB1Z2dndWdnZzQ0anV1ODh1dS5jb21kZCIsIm5hbWUiOiJuYW1lIHN1cm5hbWUiLCJpbWciOiJ1cGxvYWRzL3VzZXJzL3Byb2ZpbGUvZjcwODUwNjRhODcwMzk0YzZmMzM3NGFjNDJhNzEwOTc2MDc2NzIzZC5wbmciLCJpYXQiOjE2OTQ0MzU0MTIsImV4cCI6MTY5NzAyNzQxMn0.EnpNo11Y5rAowg8QOTBjZfmYgWv-2YrcrjwfsGFn8X0', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODYsImVtYWlsIjoidGVzdEB1Z2dndWdnZzQ0anV1ODh1dS5jb21kZCIsIm5hbWUiOiJuYW1lIHN1cm5hbWUiLCJpbWciOiJ1cGxvYWRzL3VzZXJzL3Byb2ZpbGUvZjcwODUwNjRhODcwMzk0YzZmMzM3NGFjNDJhNzEwOTc2MDc2NzIzZC5wbmciLCJpYXQiOjE2OTQ0MzU0MTIsImV4cCI6MTY5NTczMTQxMn0.a3FS5UN_tqyy6TVck6dx7-rnGZhB1lhOyK6Mbj5pxCM');
-INSERT INTO `users_tokens` VALUES (87, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODcsImVtYWlsIjoidDQ0NjM2NjhAZ21haWwuY29tIiwibmFtZSI6ImFkYXMiLCJpbWciOm51bGwsImlhdCI6MTY5NTY0NjQxMywiZXhwIjoxNjk4MjM4NDEzfQ.U5L2kGJhvyGCR-vaRf2IhoEhVJzlrtoVJ5PiwFQPEfk', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODcsImVtYWlsIjoidDQ0NjM2NjhAZ21haWwuY29tIiwibmFtZSI6ImFkYXMiLCJpbWciOm51bGwsImlhdCI6MTY5NTY0NjQxMywiZXhwIjoxNjk2OTQyNDEzfQ.Ro3GNSa4kK0A9DxWDnPd1qHBzhWMBhjiHCXa8t_TcA0');
-INSERT INTO `users_tokens` VALUES (81, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODEsImVtYWlsIjoidGVzdEB1Z2dndXVkZGR1amp1amp1dXV1LmNvbWRkIiwibmFtZSI6InNkc2RzZCIsImltZyI6InB1YmxpYy91cGxvYWRzL3VzZXJzL3Byb2ZpbGUvMDkyNzllNjczMmVjYmNlNmU2NWNlMTFmNjRjZDkxMWVlZGNhMzY3Yy5wbmciLCJpYXQiOjE2OTU2NDY2MjcsImV4cCI6MTY5ODIzODYyN30.g--b88Pjqs15dgnddnJycyqZ16Uk4g782EZkQ81zEBw', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODEsImVtYWlsIjoidGVzdEB1Z2dndXVkZGR1amp1amp1dXV1LmNvbWRkIiwibmFtZSI6InNkc2RzZCIsImltZyI6InB1YmxpYy91cGxvYWRzL3VzZXJzL3Byb2ZpbGUvMDkyNzllNjczMmVjYmNlNmU2NWNlMTFmNjRjZDkxMWVlZGNhMzY3Yy5wbmciLCJpYXQiOjE2OTU2NDY2MjcsImV4cCI6MTY5Njk0MjYyN30._i9GhT6myl9Em1qsxT4ADmej1dTQGcXzSpU_l5pLH8E');
+INSERT INTO `users_tokens` VALUES (87, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODcsImVtYWlsIjoidDQ0NjM2NjhAZ21haWwuY29tIiwibmFtZSI6ImFkYXMiLCJpbWciOm51bGwsImlhdCI6MTY5NzAyNzg5NywiZXhwIjoxNjk5NjE5ODk3fQ.HC2948YyluXZvIQoB5yIbOsK6-3zp_snQulS5YowuNs', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODcsImVtYWlsIjoidDQ0NjM2NjhAZ21haWwuY29tIiwibmFtZSI6ImFkYXMiLCJpbWciOm51bGwsImlhdCI6MTY5NzAyNzg5NywiZXhwIjoxNjk4MzIzODk3fQ.PSyeRo_6-Isrmfl7OUAFRB02zEsSJdhGcx6jqRIMPmk');
+INSERT INTO `users_tokens` VALUES (88, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODgsImVtYWlsIjoidGVzdEB1Z2lpanV1ODh1dS5jb21kZCIsIm5hbWUiOiJuYW1lIHN1cm5hbWUiLCJpYXQiOjE2OTc0NDEwMjQsImV4cCI6MTcwMDAzMzAyNH0.lgaQaNVk_e4a2C2bW5IoulxLNLjhOlnM8QCVhMehsyA', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODgsImVtYWlsIjoidGVzdEB1Z2lpanV1ODh1dS5jb21kZCIsIm5hbWUiOiJuYW1lIHN1cm5hbWUiLCJpYXQiOjE2OTc0NDEwMjQsImV4cCI6MTY5ODczNzAyNH0.2-lH9GFkc0KDWxn98wjr3jtjfNp5U4NkHa_P5LwxRo0');
+INSERT INTO `users_tokens` VALUES (89, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODksImVtYWlsIjoidGVzdEB1Z2lpanV1cDg4dXUuY29tZGQiLCJuYW1lIjoibmFtZSBzdXJuYW1lIiwicGhvbmUiOiIrMzc0OTg2NjA2OTciLCJzdGF0ZSI6InN0YXRlIiwiY291bnRyeV9pZCI6IjUiLCJnZW5kZXJfaWQiOiIxIiwiaWF0IjoxNjk3NDQxMzczLCJleHAiOjE3MDAwMzMzNzN9.8St_akiNk50wg9hkXIfFz2mLcb3UYDxSJn6_Ghv9fL8', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODksImVtYWlsIjoidGVzdEB1Z2lpanV1cDg4dXUuY29tZGQiLCJuYW1lIjoibmFtZSBzdXJuYW1lIiwicGhvbmUiOiIrMzc0OTg2NjA2OTciLCJzdGF0ZSI6InN0YXRlIiwiY291bnRyeV9pZCI6IjUiLCJnZW5kZXJfaWQiOiIxIiwiaWF0IjoxNjk3NDQxMzczLCJleHAiOjE2OTg3MzczNzN9.R_s3lBDMBEG8Om0_v6dmpa8ROsfMmdUZs6iNfLrY5kE');
+INSERT INTO `users_tokens` VALUES (90, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTAsImVtYWlsIjoidGVzdEB1Z2lpdXVqdXVwODh1dS5jb21kZCIsIm5hbWUiOiJuYW1lIHN1cm5hbWUiLCJwaG9uZSI6IiszNzQ5ODY2MDY5NyIsInN0YXRlIjoic3RhdGUiLCJjb3VudHJ5X2lkIjoiNSIsImdlbmRlcl9pZCI6IjEiLCJpYXQiOjE2OTc1MzEzMTEsImV4cCI6MTcwMDEyMzMxMX0.mBurL14zdSAVczQ7vPOb0UXy77XQ8nbDEFQKco7Yvyc', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTAsImVtYWlsIjoidGVzdEB1Z2lpdXVqdXVwODh1dS5jb21kZCIsIm5hbWUiOiJuYW1lIHN1cm5hbWUiLCJwaG9uZSI6IiszNzQ5ODY2MDY5NyIsInN0YXRlIjoic3RhdGUiLCJjb3VudHJ5X2lkIjoiNSIsImdlbmRlcl9pZCI6IjEiLCJpYXQiOjE2OTc1MzEzMTEsImV4cCI6MTY5ODgyNzMxMX0.fAfKuNWQeToA3PYhVe4al4_kL8nUFuHefLh_AET3YKw');
+INSERT INTO `users_tokens` VALUES (91, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsImVtYWlsIjoidGVzdEB1Z2lpdXl1dWp1dXA4OHV1LmNvbWRkIiwibmFtZSI6Im5hbWUgc3VybmFtZSIsInBob25lIjoiKzM3NDk4NjYwNjk3Iiwic3RhdGUiOiJzdGF0ZSIsImNvdW50cnlfaWQiOiI1IiwiZ2VuZGVyX2lkIjoiMSIsImlhdCI6MTY5NzUzMjc5OSwiZXhwIjoxNzAwMTI0Nzk5fQ.XqDSUJKliv7_CQ4CDd1v6fig4vr78MbbR5bhbwmyJAM', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsImVtYWlsIjoidGVzdEB1Z2lpdXl1dWp1dXA4OHV1LmNvbWRkIiwibmFtZSI6Im5hbWUgc3VybmFtZSIsInBob25lIjoiKzM3NDk4NjYwNjk3Iiwic3RhdGUiOiJzdGF0ZSIsImNvdW50cnlfaWQiOiI1IiwiZ2VuZGVyX2lkIjoiMSIsImlhdCI6MTY5NzUzMjc5OSwiZXhwIjoxNjk4ODI4Nzk5fQ.grYz7WL-POdB1ysRsJVEEnqP0zvjcRIGEoEU85Tzsp0');
+INSERT INTO `users_tokens` VALUES (81, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODEsImVtYWlsIjoidGVzdEB1Z2dndXVkZGR1amp1amp1dXV1LmNvbWRkIiwibmFtZSI6InNkc2RzZCIsImltZyI6InB1YmxpYy91cGxvYWRzL3VzZXJzL3Byb2ZpbGUvMDkyNzllNjczMmVjYmNlNmU2NWNlMTFmNjRjZDkxMWVlZGNhMzY3Yy5wbmciLCJwaG9uZSI6IjY1NDY1NDg4OCIsInN0YXRlIjoic2RmZHNmIiwiY291bnRyeV9pZCI6MSwiZ2VuZGVyX2lkIjoxLCJpYXQiOjE2OTc2MjA1NTcsImV4cCI6MTcwMDIxMjU1N30.yAqEmBibdB_LSBMspYBs0eYzPWHAFA2Ji0NTOk17EvA', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODEsImVtYWlsIjoidGVzdEB1Z2dndXVkZGR1amp1amp1dXV1LmNvbWRkIiwibmFtZSI6InNkc2RzZCIsImltZyI6InB1YmxpYy91cGxvYWRzL3VzZXJzL3Byb2ZpbGUvMDkyNzllNjczMmVjYmNlNmU2NWNlMTFmNjRjZDkxMWVlZGNhMzY3Yy5wbmciLCJwaG9uZSI6IjY1NDY1NDg4OCIsInN0YXRlIjoic2RmZHNmIiwiY291bnRyeV9pZCI6MSwiZ2VuZGVyX2lkIjoxLCJpYXQiOjE2OTc2MjA1NTcsImV4cCI6MTY5ODkxNjU1N30.m1j4z4f0F_xOTLv0GVByU1ms00CLoXIh6wDIsYStKQg');
+INSERT INTO `users_tokens` VALUES (70, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzAsImVtYWlsIjoicGV0cm9zeWFua2hhY2hhdHVyMUBnbWFpbC5jb20iLCJuYW1lIjoidXNlciIsImltZyI6bnVsbCwicGhvbmUiOiJ1c2VyIiwic3RhdGUiOm51bGwsImNvdW50cnlfaWQiOjUsImdlbmRlcl9pZCI6bnVsbCwiaWF0IjoxNjk3NjI2MDA5LCJleHAiOjE3MDAyMTgwMDl9.kOm4dsV_pnxFNl_uFXvXs8y7iNAVkMMreZ7VSNr_91E', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzAsImVtYWlsIjoicGV0cm9zeWFua2hhY2hhdHVyMUBnbWFpbC5jb20iLCJuYW1lIjoidXNlciIsImltZyI6bnVsbCwicGhvbmUiOiJ1c2VyIiwic3RhdGUiOm51bGwsImNvdW50cnlfaWQiOjUsImdlbmRlcl9pZCI6bnVsbCwiaWF0IjoxNjk3NjI2MDA5LCJleHAiOjE2OTg5MjIwMDl9.ioY1cavICKWhwzi6P5mSH0aTJChHLGQ0AEtHfOXmuxw');
+INSERT INTO `users_tokens` VALUES (92, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTIsImVtYWlsIjoibGlrZXRvZGV2M0BnbWFpbC5jb20iLCJuYW1lIjoiVXNlciIsImltZyI6IiIsInBob25lIjoiKzE1NDU0MTQ1MTUxNDUiLCJzdGF0ZSI6IlN0YXRlIiwiY291bnRyeV9pZCI6MiwiZ2VuZGVyX2lkIjowLCJpYXQiOjE2OTc2Mjc2MjMsImV4cCI6MTcwMDIxOTYyM30.1cWsXxU7sxGM4O_6XnAwnWlGCBzIvCS9cX_UuzO1mAU', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTIsImVtYWlsIjoibGlrZXRvZGV2M0BnbWFpbC5jb20iLCJuYW1lIjoiVXNlciIsImltZyI6IiIsInBob25lIjoiKzE1NDU0MTQ1MTUxNDUiLCJzdGF0ZSI6IlN0YXRlIiwiY291bnRyeV9pZCI6MiwiZ2VuZGVyX2lkIjowLCJpYXQiOjE2OTc2Mjc2MjMsImV4cCI6MTY5ODkyMzYyM30.m3CeXJWgdqWL-sfIqwRGk8LGN8x7YkKGHiEC-xpFyJ4');
 
 SET FOREIGN_KEY_CHECKS = 1;

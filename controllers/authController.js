@@ -5,9 +5,21 @@ const UsersTokenModel = require('../models/UsersTokenModel');
 const {generateTokens, validateRefreshToken} = require('../services/tokenService');
 const UserDto = require('../dtos/UserDto');
 const {upload} = require('../helpers/uploadHelper');
-const {randomString} = require('../helpers/stringHelper');
+const {randomNumber} = require('../helpers/stringHelper');
 const MailHelper = require('../helpers/MailHelper');
-const {userProfileImgPath, _base_url_api} = require('../config/defaults');
+const {userProfileImgPath} = require('../config/defaults');
+
+const {sendPush} = require('../services/pushNotificationService');
+
+
+exports.test111 = function(req, res){
+
+    sendPush();
+
+
+    return res.status(200).json(res.data);
+
+};
 
 exports.recoverPasswordValidate = function(req, res){
     const errors = validationResult(req);
@@ -23,6 +35,9 @@ exports.recoverPassword = async function(req, res){
     let {password} = req.body;
     const userModel = new UserModel();
 
+
+    console.log(req.user);
+
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         res.data.validationErrors = errors.array();
@@ -30,8 +45,9 @@ exports.recoverPassword = async function(req, res){
     }
 
     password = await bcrypt.hash(password, 3);
-    user.id = await userModel.update(req.user.id, {
-        password: password
+    await userModel.update(req.user.id, {
+        password: password,
+        forgot_password_code: ''
     });
 
     return res.status(200).json(res.data);
@@ -40,8 +56,7 @@ exports.recoverPassword = async function(req, res){
 exports.forgotPassword = async function(req, res){
     const {email} = req.body;
     const userModel = new UserModel();
-    const forgotPasswordToken = randomString(40);
-    const recoverEmailUrl = _base_url_api + 'recover-password/' + forgotPasswordToken;
+    const randomCode = randomNumber(5);
 
     const errors = validationResult(req);
     if(!errors.isEmpty()){
@@ -50,12 +65,12 @@ exports.forgotPassword = async function(req, res){
     }
 
     await userModel.updateByEmail(email, {
-        forgot_password_token: forgotPasswordToken
+        forgot_password_code: randomCode
     });
 
     await MailHelper.sendMail(email, 'recover password',
         `Dear user,
-         To verify your email, click on this link: ${recoverEmailUrl}
+         To verify your email, this is your code ${randomCode}
          If you did not create an account, then ignore this email.`
     );
 
@@ -102,9 +117,11 @@ exports.refresh = async function(req, res){
 };
 
 exports.signUp = async function(req, res){
+    let image = '';
+    let user = req.body;
+
     const userModel = new UserModel();
     const usersTokenModel = new UsersTokenModel();
-    let user = req.body;
 
     const errors = validationResult(req);
     if(!errors.isEmpty()){
@@ -113,19 +130,22 @@ exports.signUp = async function(req, res){
     }
 
     if(req.files && req.files['img'])
-        user.img = await upload(req.files['img'], userProfileImgPath);
+        image = await upload(req.files['img'], userProfileImgPath);
 
-    user.password = await bcrypt.hash(user.password, 3);
-    user = {
-        ...user,
+    const password = await bcrypt.hash(user.password, 3);
+    user.id = await userModel.insert({
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        img: image,
+        state: user.state,
+        password: password,
         country_id: user.country,
         gender_id: user.gender
-    };
+    });
 
-    delete user.gender;
-    delete user.country;
-
-    user.id = await userModel.insert(user);
+    user.country_id = user.country;
+    user.gender_id = user.gender;
 
     res.data.user = new UserDto(user);
     res.data.tokens = generateTokens({...res.data.user});
@@ -136,7 +156,7 @@ exports.signUp = async function(req, res){
 };
 
 exports.login = async function(req, res){
-    const {email, password} = req.body;
+    const {email, password, deviceToken} = req.body;
     const userModel = new UserModel();
     const usersTokenModel = new UsersTokenModel();
 
@@ -151,6 +171,10 @@ exports.login = async function(req, res){
         res.data.errorMessage = 'email or password is wrong';
         return res.status(400).json(res.data);
     }
+
+    await userModel.update(user.id, {
+        device_token: deviceToken
+    });
 
     res.data.user = new UserDto(user);
     res.data.tokens = await generateTokens({...res.data.user});

@@ -49,6 +49,48 @@ class UsersFollowModel extends Model{
         return 0;
     }
 
+    async getFollowers(userId){
+        const query =`
+          SELECT
+            users.id,
+            users.name,
+            users.img,
+            IF (f_users_follows.id IS NULL, 0, 1) AS i_am_follower,
+            t_users_follows.followers_count
+          FROM users_follows
+          LEFT JOIN users_follows AS f_users_follows 
+            ON users_follows.user_id = f_users_follows.following_user_id AND f_users_follows.user_id = ${userId} 
+          LEFT JOIN users 
+            ON users_follows.user_id = users.id
+          LEFT JOIN (
+            SELECT count(*) AS followers_count, following_user_id 
+            FROM users_follows 
+            GROUP BY following_user_id
+          ) AS t_users_follows ON users_follows.user_id = t_users_follows.following_user_id
+          WHERE users_follows.following_user_id = ${userId}`;
+
+        return this.exec(query);
+    }
+
+    async getFollowings(userId){
+        const query =`
+          SELECT
+            users.id,
+            users.name,
+            users.img,
+            t_users_follows.followers_count
+          FROM users_follows
+          LEFT JOIN users ON users_follows.following_user_id = users.id
+          LEFT JOIN (
+            SELECT count(*) AS followers_count, following_user_id
+            FROM users_follows
+            GROUP BY following_user_id
+          ) AS t_users_follows ON users_follows.following_user_id = t_users_follows.following_user_id
+          WHERE users_follows.user_id = ${userId}`;
+
+        return this.exec(query);
+    }
+
     async getFollowingsCount(userId){
         const [followers] = await this.t
             .count({count: '*'})

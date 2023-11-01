@@ -8,7 +8,10 @@ const {usersFollowUpdateBody} = require('../models/bodyValidation/usersFollowBod
 const {
     signUpBody,
     loginBody,
-    forgotPasswordBody
+    forgotPasswordBody,
+    recoverPasswordBody,
+    resetPasswordBody,
+    updateBody
 } = require('../models/bodyValidation/userBody');
 
 // const {negotiationInsertBody} = require('../models/bodyValidation/negotiationBody');
@@ -33,7 +36,7 @@ const country = require('../controllers/countryController');
 // const scenarioRole = require('../controllers/scenarioRoleController');
 // const negotiationUser = require('../controllers/negotiationUserController');
 
-router.get('/test', index.test);
+router.get('/test', auth.test111);
 router.get('/countries', country.list);
 
 
@@ -44,9 +47,8 @@ router.post('/sign-up', [signUpBody], auth.signUp);
 
 router.put('/auth-refresh', auth.refresh);
 router.post('/forgot-password', [forgotPasswordBody], auth.forgotPassword);
-router.get('/recover-password-validate/:forgotPasswordToken', [recoverPasswordMiddleware], auth.recoverPasswordValidate);
-router.post('/recover-password/:forgotPasswordToken', [recoverPasswordMiddleware], auth.recoverPassword);
-
+router.post('/recover-password-validate/:forgotPasswordCode', [recoverPasswordMiddleware], auth.recoverPasswordValidate);
+router.post('/recover-password/:forgotPasswordCode', [recoverPasswordMiddleware, recoverPasswordBody], auth.recoverPassword);
 
 
 //todo authmidlware to all('*'); without login sign in
@@ -67,6 +69,8 @@ router.get('/home', [authMiddleware], index.home);
 router.get('/search', [authMiddleware], search.search);
 
 router.get('/users/profile', [authMiddleware], user.profile);
+router.put('/users/reset-password', [authMiddleware, resetPasswordBody], user.resetPassword);
+router.put('/users', [authMiddleware, updateBody], user.update);
 
 
 module.exports = router;

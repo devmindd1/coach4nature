@@ -1,0 +1,46 @@
+<div class="card-body">
+    <p>max score for this quizz <b id="max_score"><%= max_score %></b></p>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label for="medium_range">medium range</label>
+                <input type="text" name="medium_range" id="medium_range"
+                       class="form-control <%= errors['medium_range'] ? 'is-invalid' : '' %>"
+                       value="<%= (model['medium_range_start'] && model['medium_range_end'])?
+                               model['medium_range_start'] + '-' + model['medium_range_end'] : '' %>">
+                <%- errors['medium_range'] ? `<span class="invalid-feedback">${errors['medium_range']['msg']}</span>`: ''%>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label for="low_push_days">low push days</label>
+                <input type="text" name="low_push_days" id="low_push_days"
+                       class="form-control <%= errors['low_push_days'] ? 'is-invalid' : '' %>"
+                       value="<%= model['low_push_days'] ? model['low_push_days'] : '' %>">
+                <%- errors['low_push_days'] ? `<span class="invalid-feedback">${errors['low_push_days']['msg']}</span>`: ''%>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label for="medium_push_days">medium push days</label>
+                <input type="text" name="medium_push_days" id="medium_push_days"
+                       class="form-control <%= errors['medium_push_days'] ? 'is-invalid' : '' %>"
+                       value="<%= model['medium_push_days'] ? model['medium_push_days'] : '' %>">
+                <%- errors['medium_push_days'] ? `<span class="invalid-feedback">${errors['medium_push_days']['msg']}</span>`: ''%>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label for="high_push_days">high push days</label>
+                <input type="text" name="high_push_days" id="high_push_days"
+                       class="form-control <%= errors['high_push_days'] ? 'is-invalid' : '' %>"
+                       value="<%= model['high_push_days'] ? model['high_push_days'] : '' %>">
+                <%- errors['high_push_days'] ? `<span class="invalid-feedback">${errors['high_push_days']['msg']}</span>`: ''%>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/admin/questions_types/validation.js"></script>

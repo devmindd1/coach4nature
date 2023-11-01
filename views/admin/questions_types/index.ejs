@@ -18,10 +18,13 @@
                             <tbody>
                                 <% for(var i=0; i < items.length; i++) { %>
                                     <tr>
-                                        <td><a class="main-anchor-link" href="/admin/questions/<%= items[i]['id'] %>"><%= items[i]['title'] %></a></td>
+                                        <td><a class="main-anchor-link" href="/admin/quizzes/edit/<%= items[i]['id'] %>"><%= items[i]['title'] %></a></td>
                                         <td class="project-actions">
-                                            <a class="btn btn-info btn-sm" href="/admin/questions/<%= items[i]['id'] %>">
+                                            <a class="btn btn-info btn-sm" href="/admin/quizzes/edit/<%= items[i]['id'] %>">
                                                 <i class="fas fa-pencil-alt"></i>
+                                            </a>
+                                            <a class="btn btn-info btn-sm" href="/admin/questions/<%= items[i]['id'] %>">
+                                                <i class="fas fa-list"></i>
                                             </a>
                                             <a class="btn btn-danger btn-sm" href="javascript:void(0);">
                                                 <i class="fas fa-trash"></i>

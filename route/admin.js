@@ -21,6 +21,7 @@ router.get('/users/edit/:userId', user.view);
 
 
 router.get('/quizzes', questionsType.index);
+router.all('/quizzes/edit/:id', questionsType.edit);
 
 router.get('/questions/:questionTypeId', [], question.getByType);
 router.all('/questions/edit/:questionTypeId/:id', [questionInsertBody], question.edit);

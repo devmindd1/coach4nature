@@ -78,7 +78,7 @@ class PostModel extends Model{
 
     getPostsByUserId(userId){
         return this.t
-            .select('title', 'text', 'has_source', 'created_timestamp_GMT0')
+            .select('id', 'title', 'text', 'has_source', 'created_timestamp_GMT0')
             .where({user_id: userId});
     }
 }

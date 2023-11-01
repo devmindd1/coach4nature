@@ -2,6 +2,7 @@ require('dotenv').config();
 const path = require('path');
 const cors = require('cors');
 const Socket = require('./core/Socket');
+const {defaultStaticPath} = require('./config/defaults');
 const socketIo = require('socket.io');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -23,21 +24,20 @@ const io = socketIo(server, {
     }
 });
 
-// app.use(cors({
-//     credentials: true,
-//     // origin: 'http://ec2-100-26-17-9.compute-1.amazonaws.com:8080',
-//     origin: 'http://music/',
-// }));
+app.use(cors({
+    credentials: true,
+    // origin: 'http://ec2-100-26-17-9.compute-1.amazonaws.com:8080',
+    origin: '*.linkedin.com',
+}));
 
 app.engine('ejs', ejs_locals_engine);
 app.set("views", path.join(__dirname, "views"));
 app.set('view engine', 'ejs');
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
-app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(fileUpload({ createParentPath: true }));
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/' + defaultStaticPath));
 
 app.use('/api', [
     apiResponse(),
@@ -55,8 +55,8 @@ app.use('/admin', [
 
         io.on('connection', socket => new Socket(socket));
 
-        // server.listen(port, '192.168.77.129', () => console.log('server in ' + port))
-        server.listen(port, () => console.log('server in ' + port))
+        server.listen(port, '192.168.77.129', () => console.log('server in ' + port))
+        // server.listen(port, () => console.log('server in ' + port))
     }catch (e) {
         console.log(e);
     }
