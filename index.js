@@ -55,8 +55,8 @@ app.use('/admin', [
 
         io.on('connection', socket => new Socket(socket));
 
-        server.listen(port, '192.168.77.129', () => console.log('server in ' + port))
-        // server.listen(port, () => console.log('server in ' + port))
+        // server.listen(port, '192.168.77.129', () => console.log('server in ' + port))
+        server.listen(port, () => console.log('server in ' + port))
     }catch (e) {
         console.log(e);
     }

@@ -16,10 +16,7 @@ exports.home = async function(req, res){
 };
 
 exports.test = async function(req, res){
-
-
     await MailHelper.sendMail('freelancetoptalent@gmail.com', 'test subject', 'test text');
-
 
     return res.status(200).json(res.data);
 };
