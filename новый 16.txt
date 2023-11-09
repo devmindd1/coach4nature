@@ -1,0 +1,12 @@
+1-6 
+	ete <= 3 apa amen or push not;
+	
+7-16 ev Q17-29 ev Q30-43 
+	ete barcr en apa amen or push not;
+
+Q7-16 ev Q17-29 ev Q30-43
+	ete medium apa amen 2 or@  mek push not;
+	
+Q7-16 ev Q17-29 ev Q30-43
+	ete low apa amen 3 or@  mek push not;
+

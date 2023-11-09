@@ -156,7 +156,7 @@ exports.signUp = async function(req, res){
 };
 
 exports.login = async function(req, res){
-    const {email, password, deviceToken} = req.body;
+    const {email, password, device_token} = req.body;
     const userModel = new UserModel();
     const usersTokenModel = new UsersTokenModel();
 
@@ -173,7 +173,7 @@ exports.login = async function(req, res){
     }
 
     await userModel.update(user.id, {
-        device_token: deviceToken
+        device_token: device_token
     });
 
     res.data.user = new UserDto(user);

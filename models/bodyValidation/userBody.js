@@ -26,6 +26,8 @@ const loginBody = [
         .withMessage('Email is require'),
     body('password').notEmpty()
         .withMessage('Password is require'),
+    body('device_token').notEmpty()
+        .withMessage('device_token is require'),
 ];
 
 const resetPasswordBody = [
