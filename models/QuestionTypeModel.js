@@ -5,7 +5,7 @@ class QuestionTypeModel extends Model{
 
     async getById(id){
         const [questionType] = await this.t
-            .select('title', 'text', 'description', 'color_hex', '')
+            .select('title', 'text', 'description', 'color_hex')
             .where({id: id});
 
         this.freeResult();

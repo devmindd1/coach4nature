@@ -15,4 +15,3 @@ exports.push = function(deviceToken, title, body){
         }
     }, options);
 };
-
